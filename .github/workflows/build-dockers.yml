@@ -32,7 +32,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64
-          file: ./dockers/v4/Dockerfile
+          file: ./dockers/pact/v4/Dockerfile
           push: true
           tags: gielinorian/pact-core:${{ github.ref_name }}, gielinorian/pact-core:latest
 
@@ -60,6 +60,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           platforms: linux/amd64,linux/arm64
-          file: ./dockers/v5/Dockerfile
+          file: ./dockers/pact/v5/Dockerfile
           push: true
           tags: gielinorian/pact-core:${{ github.ref_name }}
