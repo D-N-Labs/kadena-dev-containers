@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:26.04@sha256:19fcd1bf268f02b60aca3bd30bd8a6d9a11759a430e32921833e65f16d87348a
 
 RUN apt-get update && \
     apt-get clean
