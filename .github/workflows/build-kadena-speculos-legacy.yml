@@ -20,7 +20,7 @@ on:
           - 'nanox'
           - 'stax'
           - 'flex'
-          - 'apex_p'
+          - 'apexp'
 
 permissions:
   contents: read
@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        device: ${{ inputs.device == 'all' && fromJSON('["nanosp", "nanox", "stax", "flex", "apex_p"]') || fromJSON(format('["{0}"]', inputs.device)) }}
+        device: ${{ inputs.device == 'all' && fromJSON('["nanosp", "nanox", "stax", "flex", "apexp"]') || fromJSON(format('["{0}"]', inputs.device)) }}
 
     steps:
       - name: Checkout repository
