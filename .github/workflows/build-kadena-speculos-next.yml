@@ -1,0 +1,76 @@
+name: Build Kadena Speculos Docker (Next)
+run-name: Build Kadena Speculos Next ${{ inputs.version }} (${{ inputs.device }})
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Next app tag/branch in SmartPacts/app-kadena'
+        type: string
+        required: true
+        default: 'v2.0.0'
+      device:
+        description: 'Target Ledger device model(s)'
+        type: choice
+        required: true
+        default: 'all'
+        options:
+          - 'all'
+          - 'nanosp'
+          - 'nanox'
+          - 'stax'
+          - 'flex'
+          - 'apexp'
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-speculos-next:
+    name: Build Next (${{ inputs.version }} - ${{ matrix.device }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        device: ${{ inputs.device == 'all' && fromJSON('["nanosp", "nanox", "stax", "flex", "apexp"]') || fromJSON(format('["{0}"]', inputs.device)) }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/kadena-speculos
+          tags: |
+            type=raw,value=${{ inputs.version }}-${{ matrix.device }}
+            type=raw,value=${{ inputs.version }},enable=${{ matrix.device == 'nanosp' }}
+            type=raw,value=${{ matrix.device }}
+            type=raw,value=latest,enable=${{ matrix.device == 'nanosp' }}
+
+      - name: Build and push Next ${{ matrix.device }} Speculos Docker image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          platforms: linux/amd64
+          file: ./dockers/speculos/next/Dockerfile
+          push: true
+          build-args: |
+            APP_VERSION=${{ inputs.version }}
+            DEVICE=${{ matrix.device }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=speculos-next-${{ matrix.device }}
+          cache-to: type=gha,mode=max,scope=speculos-next-${{ matrix.device }}
