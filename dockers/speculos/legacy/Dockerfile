@@ -32,7 +32,7 @@ RUN mkdir -p /out && \
     cp "app/build/${build_dir}/bin/app.elf" /out/app.elf && \
     test -s /out/app.elf
 
-FROM ghcr.io/ledgerhq/speculos:v0.27.1
+FROM ghcr.io/ledgerhq/speculos:v0.27.4@sha256:56c7ec84c903147dac28e68706d3241218a3d9beb9562dd4a8c02947b2a24f47
 
 ARG APP_REPO
 ARG APP_VERSION
