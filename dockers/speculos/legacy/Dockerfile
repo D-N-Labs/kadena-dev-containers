@@ -2,7 +2,7 @@ ARG APP_REPO=https://github.com/SmartPacts/app-kadena.git
 ARG APP_VERSION=v1.3.4
 ARG DEVICE=nanosp
 
-FROM ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:5.5.2@sha256:218de5dd0a956b9eac89fc6c84e35f6b307e23895a6fa5346e6e13e208171973 AS builder
+FROM ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:5.5.5@sha256:20ea271c99f5055c1cbe04f285351af577d4ff2a5c8f95dcd980ed59a9846a09 AS builder
 
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 
