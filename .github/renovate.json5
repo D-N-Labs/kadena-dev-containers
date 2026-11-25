@@ -1,17 +1,28 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-  extends: ["config:best-practices", "mergeConfidence:all-badges"],
-  dependencyDashboard: false,
-  semanticCommits: "enabled",
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:best-practices',
+    'mergeConfidence:all-badges',
+  ],
+  dependencyDashboard: {
+    enabled: false,
+  },
+  semanticCommits: 'enabled',
   prHourlyLimit: 0,
   prConcurrentLimit: 0,
-  assignees: ["DnLabs-bot"],
-  reviewers: ["DeanVerjans"],
+  assignees: [
+    'DnLabs-bot',
+  ],
+  reviewers: [
+    'DeanVerjans',
+  ],
   packageRules: [
     {
-      description: "Pin the GitHub Actions to digest",
-      matchManagers: ["github-actions"],
+      description: 'Pin the GitHub Actions to digest',
+      matchManagers: [
+        'github-actions',
+      ],
       pinDigests: true,
-    }
+    },
   ],
 }
